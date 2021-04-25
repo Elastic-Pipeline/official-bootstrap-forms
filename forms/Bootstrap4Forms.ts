@@ -1,89 +1,85 @@
 import { Basic, Form, FormFieldBase } from "../../../API/FormFactory";
+import { Request, Response } from "express";
 
 export namespace Bootstrap4
 {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    export class TextFormField extends FormFieldBase
+    export class TextFormField extends Basic.TextFormField
     {
         protected helpMsg: string = "";
         protected label: string = "";
-
         
-        public SetLabel(_label: string) : TextFormField
+        public SetLabel(_label: string) : FormFieldBase
         {
             this.label = _label;
             return this;
         }
 
-        public SetHelpMessage(_helpMsg: string) : TextFormField
+        public SetHelpMessage(_helpMsg: string) : FormFieldBase
         {
             this.helpMsg = _helpMsg;
             return this;
         }
 
-        public verify(_result: Form): boolean {
+        public verify(_request: Request, _result: Form): boolean {
             return true;
         }
 
-        protected layout(_identification: string, _input:string) : string
+        protected layout(_input:string) : string
         {
             var result = '<div class="form-group">\n';
             if (this.label.length > 0)
             {
-                result += `<label for="[${_identification}][${this.id}]">${this.label}</label>\n`;
+                result += `<label for="[${this.GetFormIndentifier()}][${this.id}]">${this.label}</label>\n`;
             }
             result += _input;
             if (this.helpMsg.length > 0)
             {
-                result += `<small id="[${_identification}][${this.id}].helpId" class="form-text text-muted">${this.helpMsg}</small>\n`;
+                result += `<small id="[${this.GetFormIndentifier()}][${this.id}].helpId" class="form-text text-muted">${this.helpMsg}</small>\n`;
             }
             result += "</div>";
             return result;
         }
 
-        public construct(_identification: string): string 
+        public construct(_response: Response): string 
         {
-            return this.layout(_identification, `<input type="text" class="form-control" name="[${_identification}][${this.id}]" id="[${_identification}][${this.id}]" aria-describedby="[${_identification}][${this.id}].helpId" placeholder="">`);
+            return this.layout(`<input type="text" class="form-control" name="[${this.GetFormIndentifier()}][${this.id}]" id="[${this.GetFormIndentifier()}][${this.id}]" aria-describedby="[${this.GetFormIndentifier()}][${this.id}].helpId" placeholder="">`);
         }
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    export class PasswordFormField extends TextFormField
+    export class PasswordFormField extends Basic.PasswordFormField
     {
-        private attached: string;
-    
-        constructor(_id: string, _required: boolean = true, _attached: string = '')
+        protected helpMsg: string = "";
+        protected label: string = "";
+
+        constructor(_id: string, _required: boolean = true, _attached: string|undefined = undefined)
         {
             super(_id, _required);
-            this.attached = _attached;
         }
-    
-        public verify(_result: Form): boolean {
-            if (this.attached != undefined)
-            {
-                const attachedField: FormFieldBase|undefined = _result.GetField(this.attached);
-                if (attachedField == undefined)
-                {
-                    return false;
-                }
-    
-                if (attachedField.GetValue() == this.GetValue())
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-        public construct(_identification: string): string 
+
+        public SetLabel(_label: string) : FormFieldBase
         {
-            return this.layout(_identification, `<input type="password" class="form-control" name="[${_identification}][${this.id}]" id="[${_identification}][${this.id}]" aria-describedby="[${_identification}][${this.id}].helpId" placeholder="">`);
+            this.label = _label;
+            return this;
+        }
+
+        public SetHelpMessage(_helpMsg: string) : FormFieldBase
+        {
+            this.helpMsg = _helpMsg;
+            return this;
+        }
+
+        public construct(_response: Response): string 
+        {
+            return this.layout(`<input type="password" class="form-control" name="[${this.GetFormIndentifier()}][${this.id}]" id="[${this.GetFormIndentifier()}][${this.id}]" aria-describedby="[${this.GetFormIndentifier()}][${this.id}].helpId" placeholder="">`);
         }
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     export class EmailFormField extends Basic.EmailFormField
     {
-        public construct(_identification: string): string 
+        public construct(_response: Response): string 
         {
-            return this.layout(_identification, `<input type="email" class="form-control" name="[${_identification}][${this.id}]" id="[${_identification}][${this.id}]" aria-describedby="[${_identification}][${this.id}].helpId" placeholder="">`);
+            return this.layout(`<input type="email" class="form-control" name="[${this.GetFormIndentifier()}][${this.id}]" id="[${this.GetFormIndentifier()}][${this.id}]" aria-describedby="[${this.GetFormIndentifier()}][${this.id}].helpId" placeholder="">`);
         }
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -104,17 +100,17 @@ export namespace Bootstrap4
             return this;
         }
 
-        public verify(_result: Form): boolean 
+        public verify(_request: Request, _result: Form): boolean 
         {
             return true;
         }
-        public construct(_identification: string): string 
+        public construct(_response: Response): string 
         {
             const checkedValue = this.checked ? 'value="checkedValue" checked' : "";
             return `
 <div class="form-check">
     <label class="form-check-label">
-    <input type="checkbox" class="form-check-input" name="[${_identification}][${this.id}]" id="[${_identification}][${this.id}]" ${checkedValue}>
+    <input type="checkbox" class="form-check-input" name="[${this.GetFormIndentifier()}][${this.id}]" id="[${this.GetFormIndentifier()}][${this.id}]" ${checkedValue}>
     ${this.label}
     </label>
 </div>
@@ -131,13 +127,13 @@ export namespace Bootstrap4
             this.label = _label;
         }
     
-        public verify(_result: Form): boolean 
+        public verify(_request: Request, _result: Form): boolean 
         {
             return true;
         }
-        public construct(_identification: string): string 
+        public construct(_response: Response): string 
         {
-            return `<button type="submit" class="btn btn-primary" name='[${_identification}][${this.id}]' id='[${_identification}][${this.id}]'>${this.label}</button>`;
+            return `<button type="submit" class="btn btn-primary" name='[${this.GetFormIndentifier()}][${this.id}]' id='[${this.GetFormIndentifier()}][${this.id}]'>${this.label}</button>`;
         }
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
