@@ -6,36 +6,35 @@ export namespace Bootstrap4
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     export class TextFormField extends Basic.TextFormField
     {
-        protected helpMsg: string = "";
-        protected label: string = "";
-        
-        public SetLabel(_label: string) : FormFieldBase
-        {
-            this.label = _label;
-            return this;
-        }
+        protected helpMsg: string|undefined = undefined;
 
-        public SetHelpMessage(_helpMsg: string) : FormFieldBase
+        public SetHelpMessage(_helpMsg: string|undefined) : FormFieldBase
         {
             this.helpMsg = _helpMsg;
             return this;
         }
 
         public verify(_request: Request, _result: Form): boolean {
-            return true;
+            return super.verify(_request, _result);
         }
 
         protected layout(_input:string) : string
         {
             var result = '<div class="form-group">\n';
-            if (this.label.length > 0)
+            if (this.label != undefined)
             {
-                result += `<label for="[${this.GetFormIndentifier()}][${this.id}]">${this.label}</label>\n`;
+                if (this.label.length > 0)
+                {
+                    result += `<label for="[${this.GetFormIndentifier()}][${this.id}]">${this.label}</label>\n`;
+                }
             }
             result += _input;
-            if (this.helpMsg.length > 0)
+            if (this.helpMsg != undefined)
             {
-                result += `<small id="[${this.GetFormIndentifier()}][${this.id}].helpId" class="form-text text-muted">${this.helpMsg}</small>\n`;
+                if (this.helpMsg.length > 0)
+                {
+                    result += `<small id="[${this.GetFormIndentifier()}][${this.id}].helpId" class="form-text text-muted">${this.helpMsg}</small>\n`;
+                }
             }
             result += "</div>";
             return result;
