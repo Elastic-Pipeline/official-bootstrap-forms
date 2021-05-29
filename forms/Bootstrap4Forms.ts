@@ -1,4 +1,4 @@
-import { Basic, Form, FormFieldBase } from "../../../API/FormFactory";
+import { Basic, Form, FormFieldBase } from "../../../API/RenderBits/FormFactory";
 import { Request, Response } from "express";
 
 export namespace Bootstrap4
