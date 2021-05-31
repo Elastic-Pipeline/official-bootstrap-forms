@@ -50,9 +50,9 @@ export class PasswordFormField extends Basic.PasswordFormField
     protected helpMsg: string = "";
     protected label: string = "";
 
-    constructor(_id: string, _required: boolean = true, _attached: string|undefined = undefined)
+    constructor(_id: string, _required: boolean = true, _attached: string = "")
     {
-        super(_id, _required);
+        super(_id, _required, _attached);
     }
 
     public SetLabel(_label: string) : FormFieldBase
