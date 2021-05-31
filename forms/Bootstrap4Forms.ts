@@ -40,7 +40,7 @@ export namespace Bootstrap4
             return result;
         }
 
-        public construct(_response: Response): string 
+        public construct(_response: Response): string
         {
             return this.layout(`<input type="text" class="form-control" name="[${this.GetFormIndentifier()}][${this.id}]" id="[${this.GetFormIndentifier()}][${this.id}]" aria-describedby="[${this.GetFormIndentifier()}][${this.id}].helpId" placeholder="">`);
         }
@@ -68,7 +68,7 @@ export namespace Bootstrap4
             return this;
         }
 
-        public construct(_response: Response): string 
+        public construct(_response: Response): string
         {
             return this.layout(`<input type="password" class="form-control" name="[${this.GetFormIndentifier()}][${this.id}]" id="[${this.GetFormIndentifier()}][${this.id}]" aria-describedby="[${this.GetFormIndentifier()}][${this.id}].helpId" placeholder="">`);
         }
@@ -76,7 +76,7 @@ export namespace Bootstrap4
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     export class EmailFormField extends Basic.EmailFormField
     {
-        public construct(_response: Response): string 
+        public construct(_response: Response): string
         {
             return this.layout(`<input type="email" class="form-control" name="[${this.GetFormIndentifier()}][${this.id}]" id="[${this.GetFormIndentifier()}][${this.id}]" aria-describedby="[${this.GetFormIndentifier()}][${this.id}].helpId" placeholder="">`);
         }
@@ -99,11 +99,11 @@ export namespace Bootstrap4
             return this;
         }
 
-        public verify(_request: Request, _result: Form): boolean 
+        public verify(_request: Request, _result: Form): boolean
         {
             return true;
         }
-        public construct(_response: Response): string 
+        public construct(_response: Response): string
         {
             const checkedValue = this.checked ? 'value="checkedValue" checked' : "";
             return `
@@ -125,12 +125,12 @@ export namespace Bootstrap4
             super(_id, true);
             this.label = _label;
         }
-    
-        public verify(_request: Request, _result: Form): boolean 
+
+        public verify(_request: Request, _result: Form): boolean
         {
             return true;
         }
-        public construct(_response: Response): string 
+        public construct(_response: Response): string
         {
             return `<button type="submit" class="btn btn-primary" name='[${this.GetFormIndentifier()}][${this.id}]' id='[${this.GetFormIndentifier()}][${this.id}]'>${this.label}</button>`;
         }
